@@ -1,14 +1,14 @@
 from pydantic import BaseModel
 from uuid import UUID, uuid4
-from enum import Enum
+from enum import Enum, IntEnum
 
 
-class RoomStatus(Enum):
+class RoomStatus(IntEnum):
     OCCUPIED = 1
     EMPTY = 0
 
 
-class RoomType(Enum):
+class RoomType(IntEnum):
     BASIC = 1
     CLASSIC = 2
     LUXURY = 3
