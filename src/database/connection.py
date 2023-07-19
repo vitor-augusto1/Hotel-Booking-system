@@ -17,6 +17,15 @@ class Database:
         self.db_instance.commit()
         print("Table successfully created")
 
+    def create_new_room(self, room: Room) -> None:
+        print(f"This is the room being created: {room}")
+        query = f"""
+        INSERT INTO rooms VALUES ('{room.id}', '{room.room_status}',
+                           '{room.room_type.name}', '{room.price}')
+        """
+        self.cursor.execute(query)
+        self.db_instance.commit()
+
 db: Database = Database()
 
 
