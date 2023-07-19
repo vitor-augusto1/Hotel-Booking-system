@@ -26,6 +26,13 @@ class Database:
         self.cursor.execute(query)
         self.db_instance.commit()
 
+    def return_all_rooms(self) -> Optional[List[Room]]:
+        query = """
+        SELECT * FROM rooms
+        """
+        rooms = self.cursor.execute(query).fetchall()
+        return rooms
+
 db: Database = Database()
 
 
