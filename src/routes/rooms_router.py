@@ -20,3 +20,14 @@ def return_all_rooms():
     return {"rooms": rooms}, 200
 
 
+@room_endpoint.route('/room/', methods=['POST'])
+def create_new_room():
+    room_type = request.form['room_type']
+    room_price = request.form['room_price']
+    new_room: Room = Room(
+        room_status=RoomStatus.EMPTY,
+        room_type=RoomType(int(room_type)),
+        price=room_price
+    )
+    db.create_new_room(new_room)
+    return {"success": {"room": f"{new_room.id}"}}, 200
