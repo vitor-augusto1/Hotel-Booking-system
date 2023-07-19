@@ -33,6 +33,17 @@ class Database:
         rooms = self.cursor.execute(query).fetchall()
         return rooms
 
+    def return_room_by_id(self, id: UUID) -> Optional[Room]:
+        query = f"""
+        SELECT * FROM rooms WHERE id = '{id}';
+        """
+        room = self.cursor.execute(query).fetchall()
+        print(f"Founded room: {room}")
+        return room
+
+
 db: Database = Database()
 
 
+if __name__ == "__main__":
+    db.create_rooms_table()
