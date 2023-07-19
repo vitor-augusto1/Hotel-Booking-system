@@ -18,4 +18,4 @@ class Room(BaseModel):
     id: UUID = uuid4()
     room_status: RoomStatus
     room_type: RoomType
-    price: bool
+    price: float
