@@ -1,3 +1,5 @@
 src/routes/__pycache__
 venv
 src/__pycache__/main.cpython-311.pyc
+src/database/__pycache__
+src/schemas/__pycache__
