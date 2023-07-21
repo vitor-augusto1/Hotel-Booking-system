@@ -75,6 +75,18 @@ class Database:
         rooms: Optional[List[Room]] = self.cursor.execute(query).fetchall()
         return rooms
 
+    def return_available_rooms_by_price_range_and_type(
+            self, min_price: float, max_price: float,
+            room_type: RoomType) -> Optional[List[Room]]:
+        print(f"Room that user wants: mip = {min_price}, mxp = {max_price}, tp = {room_type}")
+        query = f"""
+        SELECT * FROM rooms WHERE price >= {min_price} AND \
+        price <= {max_price} AND room_type = '{room_type}' AND room_status = 0;
+        """
+        rooms: Optional[List[Room]] = self.cursor.execute(query).fetchall()
+        return rooms
+
+
 db: Database = Database()
 
 
