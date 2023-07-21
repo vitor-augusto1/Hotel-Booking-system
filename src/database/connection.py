@@ -58,6 +58,14 @@ class Database:
         print(f"Rooms founded: {rooms}")
         return rooms
 
+    def return_rooms_by_price_range(
+            self, min_price: float, max_price: float) -> Optional[List[Room]]:
+        query = f"""
+        SELECT * FROM rooms WHERE price >= {min_price} AND price <= {max_price}
+        """
+        rooms: Optional[List[Room]] = self.cursor.execute(query).fetchall()
+        return rooms
+
 db: Database = Database()
 
 
