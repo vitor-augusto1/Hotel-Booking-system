@@ -1,8 +1,9 @@
 from re import escape
+from typing import Dict, List, Optional
 from uuid import UUID
 from schemas.Room import Room, RoomType, RoomStatus
 from database.connection import db
-from flask import Blueprint, request, escape
+from flask import Blueprint, redirect, request, escape, url_for
 
 
 room_endpoint = Blueprint('rooms', __name__)
@@ -31,3 +32,19 @@ def create_new_room():
     )
     db.create_new_room(new_room)
     return {"success": {"room": f"{new_room.id}"}}, 200
+
+
+@room_endpoint.route('/room/available/', methods=['GET'])
+def return_all_available_rooms_and_price_range():
+    args = request.args
+    min_price = args.get('min_price')
+    max_price = args.get('max_price')
+    if None not in (min_price, max_price):
+        rooms: Optional[List[Room]] = db.return_all_available_rooms_by_price_range(
+            min_price, max_price
+        )
+    else:
+        rooms: Optional[List[Room]] = db.return_all_available_rooms()
+    return {"success": {"rooms": rooms}}
+
+
