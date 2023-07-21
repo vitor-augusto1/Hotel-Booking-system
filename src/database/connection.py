@@ -49,6 +49,15 @@ class Database:
         rooms: Optional[List[Room]] = self.cursor.execute(query).fetchall()
         return rooms
 
+    def return_all_available_rooms_by_its_type(
+            self, room_type: RoomType) -> Optional[List[Room]]:
+        query = f"""
+        SELECT * FROM rooms WHERE room_status = 0 AND room_type = '{room_type}'
+        """
+        rooms: Optional[List[Room]] = self.cursor.execute(query).fetchall()
+        print(f"Rooms founded: {rooms}")
+        return rooms
+
 db: Database = Database()
 
 
