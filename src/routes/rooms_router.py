@@ -48,3 +48,19 @@ def return_all_available_rooms_and_price_range():
     return {"success": {"rooms": rooms}}
 
 
+@room_endpoint.route('/room/available/<string:room_type>/', methods=['GET'])
+def return_available_rooms_by_type_and_price_range(room_type: RoomType):
+    args = request.args
+    min_price = args.get('min_price')
+    max_price = args.get('max_price')
+    if None not in (min_price, max_price):
+        rooms: Optional[List[Room]] = db.return_available_rooms_by_price_range_and_type(
+            min_price, max_price, RoomType[room_type.upper()].name
+        )
+    else:
+        rooms: Optional[List[Room]] = db.return_all_available_rooms_by_its_type(
+                    RoomType[room_type.upper()].name
+                )
+    return {"success": {"rooms": rooms}}
+
+
