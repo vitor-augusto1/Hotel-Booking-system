@@ -1,6 +1,7 @@
+import select
 from typing import List, Optional
 from uuid import UUID
-from schemas.Room import Room
+from schemas.Room import Room, RoomType
 import sqlite3
 
 
@@ -41,6 +42,12 @@ class Database:
         print(f"Founded room: {room}")
         return room
 
+    def return_all_available_rooms(self) -> Optional[List[Room]]:
+        query = """
+        SELECT * FROM rooms WHERE room_status = 0;
+        """
+        rooms: Optional[List[Room]] = self.cursor.execute(query).fetchall()
+        return rooms
 
 db: Database = Database()
 
