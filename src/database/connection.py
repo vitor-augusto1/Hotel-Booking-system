@@ -2,6 +2,7 @@ import select
 from typing import List, Optional
 from uuid import UUID
 from schemas.Room import Room, RoomType
+from schemas.Customer import Customer
 import sqlite3
 
 
@@ -86,6 +87,18 @@ class Database:
         rooms: Optional[List[Room]] = self.cursor.execute(query).fetchall()
         return rooms
 
+    def create_customers_table(self) -> None:
+        drop_table_query = f"""
+        DROP TABLE customers;
+        """
+        query = """
+        CREATE TABLE customers (id text, first_name text, middle_name text, \
+                last_name text, password text, booking_id text)
+        """
+        self.cursor.execute(drop_table_query)
+        self.cursor.execute(query)
+        self.db_instance.commit()
+        print("Table 'customers' successfully created")
 
 db: Database = Database()
 
