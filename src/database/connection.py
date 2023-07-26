@@ -100,6 +100,17 @@ class Database:
         self.db_instance.commit()
         print("Table 'customers' successfully created")
 
+    def create_new_customer(self, customer: Customer) -> None:
+        print(f"This is the customer being created: {customer}")
+        print(f"Pass:  {customer.password.decode()}")
+        query = f"""
+        INSERT INTO customers VALUES ('{customer.id}', '{customer.first_name}', '{customer.middle_name}', '{customer.last_name}', '{customer.password.decode()}', '{customer.booking_id}');
+        """
+        print(f"This is the query: {query}")
+        self.cursor.execute(query)
+        self.db_instance.commit()
+
+
 db: Database = Database()
 
 
