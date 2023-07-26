@@ -8,4 +8,5 @@ class Customer(BaseModel):
     first_name: str
     middle_name: Optional[str]
     last_name: str
-    booking_id: UUID
+    password: bytes
+    booking_id: Optional[UUID]
