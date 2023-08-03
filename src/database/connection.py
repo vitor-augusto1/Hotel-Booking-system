@@ -93,7 +93,7 @@ class Database:
         """
         query = """
         CREATE TABLE customers (id text, first_name text, middle_name text, \
-                last_name text, password text, booking_id text)
+                last_name text, email text, password text, booking_id text)
         """
         self.cursor.execute(drop_table_query)
         self.cursor.execute(query)
@@ -104,7 +104,7 @@ class Database:
         print(f"This is the customer being created: {customer}")
         print(f"Pass:  {customer.password.decode()}")
         query = f"""
-        INSERT INTO customers VALUES ('{customer.id}', '{customer.first_name}', '{customer.middle_name}', '{customer.last_name}', '{customer.password.decode()}', '{customer.booking_id}');
+        INSERT INTO customers VALUES ('{customer.id}', '{customer.first_name}', '{customer.middle_name}', '{customer.last_name}', '{customer.email}','{customer.password.decode()}', '{customer.booking_id}');
         """
         print(f"This is the query: {query}")
         self.cursor.execute(query)
