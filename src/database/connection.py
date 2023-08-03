@@ -110,6 +110,14 @@ class Database:
         self.cursor.execute(query)
         self.db_instance.commit()
 
+    def find_customer_by_email(self, email: str) -> Optional[Customer]:
+        print("Finding user...")
+        query = f"""
+        SELECT * FROM customers WHERE email = '{email}';
+        """
+        customer: Optional[Customer] = self.cursor.execute(query).fetchall()
+        return customer
+
 
 db: Database = Database()
 
