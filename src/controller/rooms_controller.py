@@ -2,6 +2,7 @@ from flask import request
 from database.connection import db
 from schemas.Room import Room, RoomType, RoomStatus
 from typing import List, Optional
+from uuid import UUID
 
 
 def show_room_by_id(id: UUID):
