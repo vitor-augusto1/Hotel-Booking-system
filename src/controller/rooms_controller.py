@@ -1,15 +1,18 @@
 from flask import request
 from database.connection import db
 from schemas.Room import Room, RoomType, RoomStatus
+from decorators.auth_decorator import login_required
 from typing import List, Optional
 from uuid import UUID
 
 
+@login_required
 def show_room_by_id(id: UUID):
     room: Room = db.return_room_by_id(id)
     return {"room": room}, 200
 
 
+@login_required
 def return_all_rooms():
     rooms = db.return_all_rooms()
     return {"rooms": rooms}, 200
@@ -27,6 +30,7 @@ def create_new_room():
     return {"success": {"room": f"{new_room.id}"}}, 200
 
 
+@login_required
 def return_all_available_rooms_and_price_range():
     args = request.args
     min_price = args.get('min_price')
@@ -40,6 +44,7 @@ def return_all_available_rooms_and_price_range():
     return {"success": {"rooms": rooms}}
 
 
+@login_required
 def return_available_rooms_by_type_and_price_range(room_type: RoomType):
     args = request.args
     min_price = args.get('min_price')
