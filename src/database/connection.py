@@ -118,6 +118,14 @@ class Database:
         customer: Optional[Customer] = self.cursor.execute(query).fetchall()
         return customer
 
+    def find_customer_by_id(self, id: UUID) -> Optional[Customer]:
+        print("Finding user by ID...")
+        query = f"""
+        SELECT * FROM customers WHERE id = '{id}';
+        """
+        customer: Optional[Customer] = self.cursor.execute(query).fetchall()
+        return customer
+
 
 db: Database = Database()
 
