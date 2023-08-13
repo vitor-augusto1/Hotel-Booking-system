@@ -12,6 +12,8 @@ import jwt
 @login_required
 def book_a_room():
     request_json = request.get_json()
+    token = request.headers["Authorization"].split(" ")[1]
+    data: TokenPayload = jwt.decode(token, "my_secret_here", algorithms=["HS256"])
     start_date = request_json['start_date']
     end_date = request_json['end_date']
     rooms_id: List[UUID] = request_json['room_id']
@@ -23,3 +25,9 @@ def book_a_room():
         room_status: RoomStatus = room[0][1]
         if room_status == 1:
             return {"forbidden": f"Room '{id}' is already in use."}, 401
+    booking: Booking = Booking(
+        rooms=rooms_id,
+        customer_id=data['customer_id'],
+        start_date=start_date,
+        end_date=end_date
+    )
