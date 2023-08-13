@@ -31,3 +31,7 @@ def book_a_room():
         start_date=start_date,
         end_date=end_date
     )
+    db.book_a_room(booking)
+    bks = db.return_all_bookings()
+    [print(bk) for bk in bks]
+    return {'success': {'booked_rooms': f"{rooms_id}"}}, 200
