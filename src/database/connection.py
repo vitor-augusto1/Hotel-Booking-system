@@ -3,7 +3,9 @@ from typing import List, Optional
 from uuid import UUID
 from schemas.Room import Room, RoomType
 from schemas.Customer import Customer
+from schemas.Booking import Booking
 import sqlite3
+from json import dumps
 
 
 class Database:
@@ -86,6 +88,16 @@ class Database:
         """
         rooms: Optional[List[Room]] = self.cursor.execute(query).fetchall()
         return rooms
+
+    def make_rooms_unavailable(self, rooms_id: List[UUID]) -> None:
+        for room_id in rooms_id:
+            print(f"Room id: {room_id}")
+            query = f"""
+            UPDATE rooms SET room_status = 1 WHERE id = '{room_id}';
+            """
+            self.cursor.execute(query)
+            self.db_instance.commit()
+            print(f"Room: {room_id} update successfully")
 
     def create_customers_table(self) -> None:
         drop_table_query = f"""
