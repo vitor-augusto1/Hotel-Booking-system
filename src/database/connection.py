@@ -170,8 +170,12 @@ class Database:
         INSERT INTO booking VALUES ('{booking.id}', {json_room_array}, \
                 '{booking.customer_id}', '{booking.start_date}', '{booking.end_date}')
         """
+        update_customer_query = f"""
+        UPDATE customers SET booking_id = '{booking.id}' WHERE id = '{booking.customer_id}';
+        """
         print(f"Query: {query}")
         self.cursor.execute(query)
+        self.cursor.execute(update_customer_query)
         self.db_instance.commit()
         print("New booking created.")
 
