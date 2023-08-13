@@ -147,6 +147,13 @@ class Database:
         self.db_instance.commit()
         print("Table 'booking' successfully created")
 
+    def return_all_bookings(self) -> Optional[List[Booking]]:
+        query = """
+        SELECT * FROM booking
+        """
+        booking_list: Optional[List[Booking]] = self.cursor.execute(query).fetchall()
+        return booking_list
+
 db: Database = Database()
 
 
