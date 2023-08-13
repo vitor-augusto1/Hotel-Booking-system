@@ -138,6 +138,14 @@ class Database:
         customer: Optional[Customer] = self.cursor.execute(query).fetchall()
         return customer
 
+    def create_booking_table(self) -> None:
+        query = """
+        CREATE TABLE booking (id text, rooms_id text, customer_id text, \
+                start_date text, end_date text)
+        """
+        self.cursor.execute(query)
+        self.db_instance.commit()
+        print("Table 'booking' successfully created")
 
 db: Database = Database()
 
