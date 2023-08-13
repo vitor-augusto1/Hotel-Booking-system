@@ -154,6 +154,22 @@ class Database:
         booking_list: Optional[List[Booking]] = self.cursor.execute(query).fetchall()
         return booking_list
 
+    def book_a_room(self, booking: Booking) -> None:
+        rooms_list: List[UUID] = booking.rooms
+        print(f"Rooms being booked: {rooms_list}")
+        self.make_rooms_unavailable(rooms_list)
+        json_room_array = dumps(str(rooms_list))
+        query = f"""
+        INSERT INTO booking VALUES ('{booking.id}', {json_room_array}, \
+                '{booking.customer_id}', '{booking.start_date}', '{booking.end_date}')
+        """
+        print(f"Query: {query}")
+        self.cursor.execute(query)
+        self.db_instance.commit()
+        print("New booking created.")
+
+
+
 db: Database = Database()
 
 
