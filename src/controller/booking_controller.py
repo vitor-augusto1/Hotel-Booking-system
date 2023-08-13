@@ -18,13 +18,16 @@ def book_a_room():
     end_date = request_json['end_date']
     rooms_id: List[UUID] = request_json['room_id']
     if None in (start_date, end_date, rooms_id):
-        return {"error": "Invalid request."}, 400 
+        return {"error": "Invalid request."}, 400
+    rooms_in_use = []
     for id in rooms_id:
         print(f"ID:  {id}")
         room: Room = db.return_room_by_id(id)
         room_status: RoomStatus = room[0][1]
         if room_status == 1:
-            return {"forbidden": f"Room '{id}' is already in use."}, 401
+            rooms_in_use.append(id)
+    if rooms_in_use:
+        return {"forbidden": f"Room '{rooms_in_use}' is already in use."}, 401
     booking: Booking = Booking(
         rooms=rooms_id,
         customer_id=data['customer_id'],
