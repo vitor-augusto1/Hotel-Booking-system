@@ -10,3 +10,6 @@ def return_all_customers():
     return {"customers": customers}, 200
 
 
+def return_all_bookings():
+    bookings: Optional[List[Booking]] = db.return_all_bookings()
+    return {"bookings": bookings}, 200
