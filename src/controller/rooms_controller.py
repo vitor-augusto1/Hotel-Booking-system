@@ -1,7 +1,7 @@
 from flask import request
 from database.connection import db
 from schemas.Room import Room, RoomType, RoomStatus
-from decorators.auth_decorator import login_required
+from decorators.auth_decorator import login_required, admin_only
 from typing import List, Optional
 from uuid import UUID
 
@@ -18,6 +18,7 @@ def return_all_rooms():
     return {"rooms": rooms}, 200
 
 
+@admin_only
 def create_new_room():
     room_type = request.form['room_type']
     room_price = request.form['room_price']
