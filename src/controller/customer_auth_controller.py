@@ -50,7 +50,7 @@ def authenticate_user():
     if (not user_provided_a_valid_password):
         return {"error": "Invalid Credentials"}, 401
     customer_id: UUID = customer[0][0]
-    jwt_payload: TokenPayload = TokenPayload(customer_id=customer_id)
+    jwt_payload: TokenPayload = TokenPayload(customer_id=customer_id, is_admin=False)
     token = jwt.encode(jwt_payload.dict(), jwt_secret, algorithm="HS256")
     print(f"Generated token: {token}")
     return {"success": token}, 200
