@@ -1,16 +1,19 @@
 import select
-from typing import List, Optional
-from uuid import UUID
-from schemas.Room import Room, RoomType
-from schemas.Customer import Customer
-from schemas.Booking import Booking
 import sqlite3
 from json import dumps
+from typing import List, Optional
+from uuid import UUID
+
+from schemas.Booking import Booking
+from schemas.Customer import Customer
+from schemas.Room import Room, RoomType
 
 
 class Database:
     def __init__(self) -> None:
-        self.db_instance = sqlite3.connect("hotel_system.db", check_same_thread=False)
+        self.db_instance = sqlite3.connect(
+            'hotel_system.db', check_same_thread=False
+        )
         self.cursor = self.db_instance.cursor()
 
     def create_rooms_table(self) -> None:
@@ -19,10 +22,10 @@ class Database:
         """
         self.cursor.execute(query)
         self.db_instance.commit()
-        print("Table successfully created")
+        print('Table successfully created')
 
     def create_new_room(self, room: Room) -> None:
-        print(f"This is the room being created: {room}")
+        print(f'This is the room being created: {room}')
         query = f"""
         INSERT INTO rooms VALUES ('{room.id}', '{room.room_status}',
                            '{room.room_type.name}', '{room.price}')
@@ -42,7 +45,7 @@ class Database:
         SELECT * FROM rooms WHERE id = '{id}';
         """
         room = self.cursor.execute(query).fetchall()
-        print(f"Founded room: {room}")
+        print(f'Founded room: {room}')
         return room
 
     def return_all_available_rooms(self) -> Optional[List[Room]]:
@@ -53,16 +56,18 @@ class Database:
         return rooms
 
     def return_all_available_rooms_by_its_type(
-            self, room_type: RoomType) -> Optional[List[Room]]:
+        self, room_type: RoomType
+    ) -> Optional[List[Room]]:
         query = f"""
         SELECT * FROM rooms WHERE room_status = 0 AND room_type = '{room_type}'
         """
         rooms: Optional[List[Room]] = self.cursor.execute(query).fetchall()
-        print(f"Rooms founded: {rooms}")
+        print(f'Rooms founded: {rooms}')
         return rooms
 
     def return_rooms_by_price_range(
-            self, min_price: float, max_price: float) -> Optional[List[Room]]:
+        self, min_price: float, max_price: float
+    ) -> Optional[List[Room]]:
         query = f"""
         SELECT * FROM rooms WHERE price >= {min_price} AND price <= {max_price}
         """
@@ -70,7 +75,8 @@ class Database:
         return rooms
 
     def return_all_available_rooms_by_price_range(
-            self, min_price: float, max_price: float) -> Optional[List[Room]]:
+        self, min_price: float, max_price: float
+    ) -> Optional[List[Room]]:
         query = f"""
         SELECT * FROM rooms WHERE price >= {min_price} \
         AND price <= {max_price} AND room_status = 0;
@@ -79,9 +85,11 @@ class Database:
         return rooms
 
     def return_available_rooms_by_price_range_and_type(
-            self, min_price: float, max_price: float,
-            room_type: RoomType) -> Optional[List[Room]]:
-        print(f"Room that user wants: mip = {min_price}, mxp = {max_price}, tp = {room_type}")
+        self, min_price: float, max_price: float, room_type: RoomType
+    ) -> Optional[List[Room]]:
+        print(
+            f'Room that user wants: mip = {min_price}, mxp = {max_price}, tp = {room_type}'
+        )
         query = f"""
         SELECT * FROM rooms WHERE price >= {min_price} AND \
         price <= {max_price} AND room_type = '{room_type}' AND room_status = 0;
@@ -91,13 +99,13 @@ class Database:
 
     def make_rooms_unavailable(self, rooms_id: List[UUID]) -> None:
         for room_id in rooms_id:
-            print(f"Room id: {room_id}")
+            print(f'Room id: {room_id}')
             query = f"""
             UPDATE rooms SET room_status = 1 WHERE id = '{room_id}';
             """
             self.cursor.execute(query)
             self.db_instance.commit()
-            print(f"Room: {room_id} update successfully")
+            print(f'Room: {room_id} update successfully')
 
     def create_customers_table(self) -> None:
         drop_table_query = f"""
@@ -113,12 +121,12 @@ class Database:
         print("Table 'customers' successfully created")
 
     def create_new_customer(self, customer: Customer) -> None:
-        print(f"This is the customer being created: {customer}")
-        print(f"Pass:  {customer.password.decode()}")
+        print(f'This is the customer being created: {customer}')
+        print(f'Pass:  {customer.password.decode()}')
         query = f"""
         INSERT INTO customers VALUES ('{customer.id}', '{customer.first_name}', '{customer.middle_name}', '{customer.last_name}', '{customer.email}','{customer.password.decode()}', '{customer.booking_id}');
         """
-        print(f"This is the query: {query}")
+        print(f'This is the query: {query}')
         self.cursor.execute(query)
         self.db_instance.commit()
 
@@ -126,11 +134,13 @@ class Database:
         query = f"""
         SELECT * FROM customers;
         """
-        customers: Optional[List[Customer]] = self.cursor.execute(query).fetchall()
+        customers: Optional[List[Customer]] = self.cursor.execute(
+            query
+        ).fetchall()
         return customers
 
     def find_customer_by_email(self, email: str) -> Optional[Customer]:
-        print("Finding user...")
+        print('Finding user...')
         query = f"""
         SELECT * FROM customers WHERE email = '{email}';
         """
@@ -138,7 +148,7 @@ class Database:
         return customer
 
     def find_customer_by_id(self, id: UUID) -> Optional[Customer]:
-        print("Finding user by ID...")
+        print('Finding user by ID...')
         query = f"""
         SELECT * FROM customers WHERE id = '{id}';
         """
@@ -158,12 +168,14 @@ class Database:
         query = """
         SELECT * FROM booking
         """
-        booking_list: Optional[List[Booking]] = self.cursor.execute(query).fetchall()
+        booking_list: Optional[List[Booking]] = self.cursor.execute(
+            query
+        ).fetchall()
         return booking_list
 
     def book_a_room(self, booking: Booking) -> None:
         rooms_list: List[UUID] = booking.rooms
-        print(f"Rooms being booked: {rooms_list}")
+        print(f'Rooms being booked: {rooms_list}')
         self.make_rooms_unavailable(rooms_list)
         json_room_array = dumps(str(rooms_list))
         query = f"""
@@ -173,16 +185,15 @@ class Database:
         update_customer_query = f"""
         UPDATE customers SET booking_id = '{booking.id}' WHERE id = '{booking.customer_id}';
         """
-        print(f"Query: {query}")
+        print(f'Query: {query}')
         self.cursor.execute(query)
         self.cursor.execute(update_customer_query)
         self.db_instance.commit()
-        print("New booking created.")
-
+        print('New booking created.')
 
 
 db: Database = Database()
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     db.create_rooms_table()

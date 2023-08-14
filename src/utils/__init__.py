@@ -1,1 +1,1 @@
-from .encrypt import encrypt_password, check_password
+from .encrypt import check_password, encrypt_password

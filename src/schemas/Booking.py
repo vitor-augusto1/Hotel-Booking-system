@@ -1,7 +1,8 @@
 from datetime import date
 from typing import List
-from pydantic import BaseModel
 from uuid import UUID, uuid4
+
+from pydantic import BaseModel
 
 
 class Booking(BaseModel):

@@ -1,5 +1,9 @@
 from flask import Blueprint
-from controller.admin_controller import return_all_customers, return_all_bookings
+
+from controller.admin_controller import (
+    return_all_bookings,
+    return_all_customers,
+)
 
 admin_endpoints = Blueprint('admin', __name__)
 

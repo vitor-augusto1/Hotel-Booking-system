@@ -1,6 +1,6 @@
 from flask import Blueprint
-from controller.booking_controller import book_a_room
 
+from controller.booking_controller import book_a_room
 
 book_endpoint = Blueprint('booking', __name__)
 
