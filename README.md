@@ -14,3 +14,10 @@ and how to work with sqlite.
 * Python version: 3.11.3
 * Flask version: 2.3.2
 * SQLite
+
+
+## Run
+You can run this project locally by running:
+```
+~$ flask --app src/main.py run
+```
