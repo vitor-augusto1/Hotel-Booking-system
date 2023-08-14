@@ -7,3 +7,4 @@ from uuid import UUID
 class TokenPayload(BaseModel):
     customer_id: str
     exp: datetime.datetime = datetime.datetime.utcnow() + datetime.timedelta(hours=4)
+    is_admin: bool
